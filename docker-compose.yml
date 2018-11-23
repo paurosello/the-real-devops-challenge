@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  restaurant_app:
+    image: restaurant_app
+    restart: always
+    environment:
+      MONGO_URI: mongodb://mongo:27017/restaurant_app
+    ports:
+      - 8080:8080
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+
+  mongo-seed:
+    image: mongo
+    links:
+      - mongo
+    volumes:
+      - ./data:/seed-data
+    command:
+      'bash -c "mongoimport --host mongo --db restaurant_app --mode upsert --type json --file /seed-data/restaurant.json --jsonArray"'  
