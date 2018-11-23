@@ -18,6 +18,10 @@ jobs:
         - docker build -t quay.io/$DOCKER_USERNAME/challenge -f Dockerfile_app .
         - docker push quay.io/$DOCKER_USERNAME/challenge
     - stage: deployment
+      install: pip install tox-travis
+      before_script:
+        - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl
+        - chmod +x kubectl && sudo mv kubectl /usr/local/bin/
       script:
         - kubectl config set-credentials kubeuser/$KUBE_IP --username=$KUBE_USER --password=$KUBE_PASS
         - kubectl config set-cluster $KUBE_IP --insecure-skip-tls-verify=true --server=https://$KUBE_IP
