@@ -1,19 +1,22 @@
 sudo: true
 dist: trusty
 
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
 jobs:
   include:
     - stage: unit tests
       language: python
-      python:
-        - "2.7"
-        - "3.4"
-        - "3.5"
-        - "3.6"
       install: pip install tox-travis
       script: tox
+      
     - stage: build docker image
+      language: none
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" quay.io --password-stdin
       - docker build -t quay.io/$DOCKER_USERNAME/challenge -f Dockerfile_app .
-      - docker push $DOCKER_USERNAME/challenge
+      - docker push quay.io/$DOCKER_USERNAME/challenge
