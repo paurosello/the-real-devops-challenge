@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restaurant-mongo
+spec:
+  selector:
+    matchLabels:
+      app: restaurant-mongo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: restaurant-mongo
+    spec:
+      containers:
+      - name: restaurant-mongo
+        image: mongo
+        ports:
+          - containerPort: 27017
+        volumeMounts:
+          - name: restaurant-mongo
+            mountPath: /data/db
+      volumes:
+        - name: restaurant-mongo
+          persistentVolumeClaim:
+            claimName: restaurant-mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: restaurant-mongo
+  labels:
+    app: restaurant-mongo
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    app: restaurant-mongo

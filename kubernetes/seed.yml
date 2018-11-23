@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed-restaurant
+spec:
+  completions: 1
+  template:
+    metadata:
+      name: seed-restaurant
+    spec:
+      containers:
+        - name: seed-restaurant
+          image: mongo
+          command: ["mongoimport"]
+          args: ["--host", "restaurant-mongo", "--db", "restaurant_app", "--mode", "upsert", "--type", "json", "--file", "/seed-data/restaurant.json", "--jsonArray"]
+          volumeMounts:
+            - name: seed-data
+              mountPath: /seed-data
+      volumes:
+        - name: seed-data
+          configMap:
+            name: seed-data
+      restartPolicy: Never

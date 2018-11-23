@@ -14,6 +14,15 @@ jobs:
   include:
     - stage: build docker image
       script:
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" quay.io --password-stdin
-      - docker build -t quay.io/$DOCKER_USERNAME/challenge -f Dockerfile_app .
-      - docker push quay.io/$DOCKER_USERNAME/challenge
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" quay.io --password-stdin
+        - docker build -t quay.io/$DOCKER_USERNAME/challenge -f Dockerfile_app .
+        - docker push quay.io/$DOCKER_USERNAME/challenge
+    - stage: deployment
+      script:
+        - kubectl config set-credentials kubeuser/$KUBE_IP --username=$KUBE_USER --password=$KUBE_PASS
+        - kubectl config set-cluster $KUBE_IP --insecure-skip-tls-verify=true --server=https://$KUBE_IP
+        - kubectl config set-context default/$KUBE_IP/kubeuser --user=kubeuser/$KUBE_IP --namespace=default --cluster=$KUBE_IP
+        - kubectl config use-context default/$KUBE_IP/kubeuser
+        - kubectl create namespace $NAMESPACE
+        - kubectl create configmap seed-data --from-file=data/ -n $NAMESPACE 
+        - kubectl apply -f . -n $NAMESPACE
