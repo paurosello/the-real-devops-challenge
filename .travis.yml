@@ -18,7 +18,6 @@ jobs:
         - docker build -t quay.io/$DOCKER_USERNAME/challenge -f Dockerfile_app .
         - docker push quay.io/$DOCKER_USERNAME/challenge
     - stage: deployment
-      install: pip install tox-travis
       before_script:
         - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl
         - chmod +x kubectl && sudo mv kubectl /usr/local/bin/
@@ -29,5 +28,5 @@ jobs:
         - kubectl config use-context default/$KUBE_IP/kubeuser
         - kubectl create namespace $NAMESPACE
         - kubectl create configmap seed-data --from-file=data/ -n $NAMESPACE 
-        - kubectl apply -f . -n $NAMESPACE
+        - kubectl apply -f kubernetes/ -n $NAMESPACE
         - kubectl patch deployment restaurant-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
