@@ -29,4 +29,4 @@ jobs:
         - kubectl create namespace $NAMESPACE
         - kubectl create configmap seed-data --from-file=data/ -n $NAMESPACE 
         - kubectl apply -f kubernetes/ -n $NAMESPACE
-        - kubectl patch deployment restaurant-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+        - kubectl patch deployment restaurant-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" -n $NAMESPACE
