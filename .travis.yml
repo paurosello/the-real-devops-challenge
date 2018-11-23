@@ -15,5 +15,5 @@ jobs:
     - stage: build docker image
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" quay.io --password-stdin
-      - docker build -t quay.io/$DOCKER_USERNAME/challenge .
+      - docker build -t quay.io/$DOCKER_USERNAME/challenge -f Dockerfile_app .
       - docker push $DOCKER_USERNAME/challenge
