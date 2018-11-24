@@ -26,7 +26,7 @@ jobs:
         - kubectl config set-cluster $KUBE_IP --insecure-skip-tls-verify=true --server=https://$KUBE_IP
         - kubectl config set-context default/$KUBE_IP/kubeuser --user=kubeuser/$KUBE_IP --namespace=default --cluster=$KUBE_IP
         - kubectl config use-context default/$KUBE_IP/kubeuser
-        - kubectl create namespace $NAMESPACE || exit 1
-        - kubectl create configmap seed-data --from-file=data/ -n $NAMESPACE || exit 1
+        - kubectl create namespace $NAMESPACE || true
+        - kubectl create configmap seed-data --from-file=data/ -n $NAMESPACE || true
         - kubectl apply -f kubernetes/ -n $NAMESPACE
         - kubectl patch deployment restaurant-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" -n $NAMESPACE
