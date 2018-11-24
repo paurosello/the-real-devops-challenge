@@ -1,3 +1,6 @@
+# Check my solution
+[Solution](SOLUTION.md)
+
 # [CommitConf] The real DevOps challenge
 
 ![Intelygenz](./assets/intelygenz.logo.jpeg)![CommitConf](./assets/commit-conf.logo.png)
