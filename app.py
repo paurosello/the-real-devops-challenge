@@ -16,7 +16,7 @@ mongo = PyMongo(app)
 
 
 @app.route("/health")
-def restaurants():
+def health():
     mongo.db.restaurant.find_one()
     return "up"
 
