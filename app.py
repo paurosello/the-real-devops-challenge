@@ -15,6 +15,11 @@ app.url_map.converters["objectid"] = ObjectIdConverter
 mongo = PyMongo(app)
 
 
+@app.route("/health")
+def restaurants():
+    mongo.db.restaurant.find_one()
+    return "up"
+
 @app.route("/api/v1/restaurant")
 def restaurants():
     restaurants = find_restaurants(mongo)
