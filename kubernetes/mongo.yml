@@ -29,8 +29,6 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
-          successThreshold: 6
-          failureThreshold: 1
         readinessProbe:
           exec:
             command:
@@ -40,8 +38,6 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
-          successThreshold: 6
-          failureThreshold: 1
       volumes:
         - name: restaurant-mongo
           persistentVolumeClaim:
